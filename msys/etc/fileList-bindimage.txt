@@ -1,4 +1,3 @@
-bin/antiword.exe
 bin/basename.exe
 bin/bash.exe
 bin/bison.exe
@@ -122,19 +121,3 @@ bin/wc.exe
 bin/wish.exe
 bin/wish85.exe
 bin/xargs.exe
-libexec/git-core/git-credential-store.exe
-libexec/git-core/git-credential-wincred.exe
-libexec/git-core/git-daemon.exe
-libexec/git-core/git-fast-import.exe
-libexec/git-core/git-http-backend.exe
-libexec/git-core/git-http-fetch.exe
-libexec/git-core/git-http-push.exe
-libexec/git-core/git-imap-send.exe
-libexec/git-core/git-remote-ftp.exe
-libexec/git-core/git-remote-ftps.exe
-libexec/git-core/git-remote-http.exe
-libexec/git-core/git-remote-https.exe
-libexec/git-core/git-remote-testsvn.exe
-libexec/git-core/git-sh-i18n--envsubst.exe
-libexec/git-core/git-show-index.exe
-libexec/git-core/git-upload-pack.exe
