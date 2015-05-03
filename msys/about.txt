@@ -1,0 +1,7 @@
+Based on (Git-1.9.5-preview20141217)
+Last update: 17 December 2014
+
+Licenses
+This software contains Embedded CAcert Root Certificates. For more information please go to https://www.cacert.org/policy/RootDistributionLicense.php.
+
+This package contains software from a number of other projects including zlib, curl, msmtp, tcl/tk, perl, msys and a number of libraries and utilities from the GNU project.
