@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+filePath=$1
+
+echo $filePath 2
+
+arg="-o"
+script="`dirname $0`/explorebin/revealInExplorer.exe"
+if [ "$filePath" == "" ]; then
+    filePath=`pwd`
+    arg=
+fi
+
+if [ -f "$filePath" ]; then
+    arg=""
+fi
+
+realFilePath="`cygpath -w $filePath`"
+echo "$filePath" "<=>" "$realFilePath"
+echo "running"
+echo "   $script $arg \"$realFilePath\""
+
+"$script" $arg "$realFilePath"
