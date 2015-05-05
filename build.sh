@@ -18,7 +18,12 @@ if ! [[ -f node.exe && `node.exe --version` == $NODE_VERSION ]]; then
 fi
 
 mkdir -p node_modules
-# npm install npm@latest --production
+npm install npm@latest --production
+
+rm -rf node_modules/npm/doc
+rm -rf node_modules/npm/man
+rm -rf node_modules/npm/test
+rm -rf node_modules/npm/html
 
 cat $SOURCE/node_modules/.bin/npm | sed "s/\.\./node_modules/" >  $SOURCE/npm
 cat $SOURCE/node_modules/.bin/npm.cmd | sed "s/\.\./node_modules/" >  $SOURCE/.cmd
@@ -69,6 +74,33 @@ rm -rf node_modules/sqlite3/node_modules/nan
 
 
 
-tar -zcvf /h/Chromium/sdk-deps-win/release.tar.gz --exclude="./.git" --exclude=./pty.js --exclude=./release.tar.gz .
+mkdir -p ./releases
+tar -zcvf ./releases/node.tar.gz --exclude="./.git" --exclude="./pty.js" --exclude="./release*"  --exclude="./msys" .
+tar -zcvf ./releases/msys.tar.gz --exclude="./.git" msys
 
-
+### upload
+getGitToken() {
+    token=`git config github.token` || true
+    if [ "$token" == "" ]; then
+        echo "Could not find token, run 'git config --global github.token <token>'"
+        exit 1
+    fi
+    auth=$token:x-oauth-basic
+}
+createRelease() {
+    getGitToken
+    repoName="sdk-deps-win32" 
+    name="v0.0.1"
+    owner=cloud9ide
+    curl -u "$auth" https://api.github.com/repos/$owner/$repoName/releases  -X POST -d '{
+        "tag_name": "'$name'",
+        "target_commitish": "master",
+        "name": "'$name'",
+        "body": "Description of the release",
+        "draft": true,
+        "prerelease": false
+    }' # > /dev/null 2>&1
+    # TODO upload
+    # curl -u "$auth"  https://api.github.com/repos/$owner/$repoName/releases -X GET
+    # POST https://<upload_url>/repos/:owner/:repo/releases/:id/assets?name=foo.zip
+}
