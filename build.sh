@@ -68,10 +68,25 @@ popd
 
 ### sqlite3
 npm install sqlite3@3.0.5 --production
-rm -rf node_modules/sqlite3/deps
-rm -rf node_modules/sqlite3/node_modules/node-pre-gyp
-rm -rf node_modules/sqlite3/node_modules/nan
+pushd node_modules/sqlite3
+p=`node -p '
+    path = require("path");
+    fs = require("fs");
+    p = require("node-pre-gyp").find(path.resolve("package.json"));
+    p="./"+path.relative("./lib", p).replace(/[\\\\]/g, "/");
+    var data = fs.readFileSync("./lib/sqlite3.js", "utf8");
+    data = data.replace(/require..node-pre-gyp../,
+        "{find:function() {return " +JSON.stringify(p) + "}}")
+    fs.writeFileSync("./lib/sqlite3.js", data, "utf8");
+    
+'`
+popd
 
+rm -rf node_modules/sqlite3/node_modules/nan
+rm -rf node_modules/sqlite3/node_modules/node-pre-gyp
+rm -rf node_modules/sqlite3/deps
+rm -rf node_modules/sqlite3/src
+node -p "require('sqlite3')"
 
 
 mkdir -p ./releases
