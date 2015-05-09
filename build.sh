@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 # 
 # get all dependencies for c9
@@ -13,12 +13,12 @@ cd `dirname $0`
 SOURCE=`pwd`
 
 NODE_VERSION=v0.12.2
-if ! [[ -f node.exe && `node.exe --version` == $NODE_VERSION ]]; then
-    curl -OL http://nodejs.org/dist/$NODE_VERSION/node.exe
+if ! [[ -f ./node.exe && `./node.exe --version || true` == $NODE_VERSION ]]; then
+    echo curl -OL http://nodejs.org/dist/$NODE_VERSION/node.exe
 fi
 
 mkdir -p node_modules
-npm install npm@latest --production
+# npm install npm@latest --production
 
 rm -rf node_modules/npm/doc
 rm -rf node_modules/npm/man
@@ -26,12 +26,8 @@ rm -rf node_modules/npm/test
 rm -rf node_modules/npm/html
 
 cat $SOURCE/node_modules/.bin/npm | sed "s/\.\./node_modules/" >  $SOURCE/npm
-cat $SOURCE/node_modules/.bin/npm.cmd | sed "s/\.\./node_modules/" >  $SOURCE/.cmd
+cat $SOURCE/node_modules/.bin/npm.cmd | sed "s/\.\./node_modules/" >  $SOURCE/npm.cmd
 
-
-if ! [ -d pty.js ]; then
-    git clone git://github.com/cloud9ide/pty.js.git
-fi
 
 
 
@@ -39,8 +35,12 @@ fi
 PATH="$SOURCE:$PATH"
 echo `which npm`
 
+if ! [ -d pty.js ]; then
+    # workaround for couldn't make stderr distinct from stdou
+    git clone git://github.com/cloud9ide/pty.js.git || true
+fi
 pushd pty.js
-git submodule update --init --recursive
+git submodule update --init --recursive || true
 npm install --production
 popd
 
@@ -75,8 +75,9 @@ rm -rf node_modules/sqlite3/node_modules/nan
 
 
 mkdir -p ./releases
-tar -zcvf ./releases/node.tar.gz --exclude="./.git" --exclude="./pty.js" --exclude="./release*"  --exclude="./msys" .
-tar -zcvf ./releases/msys.tar.gz --exclude="./.git" msys
+# pass --group 0 to make archive compatible with old msys
+tar -zcvf ./releases/node.tar.gz --exclude="./.git" --exclude="./pty.js" --exclude="./release*"  --exclude="./msys" --group 0 .
+tar -zcvf ./releases/msys.tar.gz --exclude="./.git" --group 0 msys
 
 ### upload
 getGitToken() {
