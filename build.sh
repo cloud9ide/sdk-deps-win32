@@ -91,7 +91,8 @@ node -p "require('sqlite3')"
 
 mkdir -p ./releases
 # pass --group 0 to make archive compatible with old msys
-tar -zcvf ./releases/node.tar.gz --exclude="./.git" --exclude="./pty.js" --exclude="./release*"  --exclude="./msys" --group 0 .
+tar -zcvf ./releases/node.tar.gz --exclude="./.git" --exclude="./pty.js" \
+    --exclude="./release*"  --exclude="./msys" --exclude="./build.sh" --exclude="./install.sh" --group 0 .
 tar -zcvf ./releases/msys.tar.gz --exclude="./.git" --group 0 msys
 
 ### upload
