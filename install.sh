@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 
-set -e
+set -ex
 has() {
   type "$1" > /dev/null 2>&1
   return $?
@@ -25,7 +25,13 @@ getTar() {
     tar --overwrite -zxf $1
     rm -f $1
 }
+
 mkdir -p "$C9_DIR"
 echo "*" > "$C9_DIR/.gitignore"
+# tar can not remove exe files when they are used
+rm -rf "$C9_DIR/msys"
+rm -rf "$C9_DIR/node.exe"
+rm -rf "$C9_DIR/node_modules/pty.js"
+rm -rf "$C9_DIR/node_modules/sqlite3"
 getTar node.tar.gz
 getTar msys.tar.gz
