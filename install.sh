@@ -12,7 +12,7 @@ C9_DIR="$HOME/.c9"
 if has "wget"; then
   DOWNLOAD="wget --no-check-certificate -nc"
 elif has "curl"; then
-  DOWNLOAD="curl -sSOL"
+  DOWNLOAD="curl -sSOLk"
 else
   echo "Error: you need curl or wget to proceed" >&2;
   exit 1
@@ -35,3 +35,5 @@ rm -rf "$C9_DIR/node_modules/pty.js"
 rm -rf "$C9_DIR/node_modules/sqlite3"
 getTar node.tar.gz
 getTar msys.tar.gz
+
+echo "1" > "$C9_DIR/installed"
