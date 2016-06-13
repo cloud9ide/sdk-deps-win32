@@ -34,6 +34,16 @@ rm -rf "$C9_DIR/node.exe"
 rm -rf "$C9_DIR/node_modules/pty.js"
 rm -rf "$C9_DIR/node_modules/sqlite3"
 getTar node.tar.gz
-getTar msys.tar.gz
+
+pushd "$(dirname `which bash`)"
+"$C9_DIR/node.exe" -e "
+    require('fs').writeFileSync(
+        process.execPath + '/../standalone.settings', 
+        JSON.stringify({bashDir: process.cwd()}, null,4),
+        'utf8'
+    )
+"
+popd
+
 
 echo "1" > "$C9_DIR/installed"
