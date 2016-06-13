@@ -12,8 +12,10 @@ or
 
     
 The above will install `node.js` with precompiled versions of `pty.js` and `sqlite3`.
-And minimal version of msys (Cloud9 uses bash, curl, tar, mkdir and rm)
+And will set up Cloud9 to use the bash executable with which the above script was launched. (Cloud9 needs bash, curl, tar, zip, mkdir and rm).
 
-All these are added to $HOME/.c9 folder
-when cloud9 is launched from environment that misses $HOME variable it will use 
-`$HOMEDRIVE$HOMEPATH` as $HOME
+All these are added to `$HOME/.c9` folder
+when cloud9 is launched from environment that misses `$HOME` variable it will use 
+`$HOMEDRIVE$HOMEPATH` as `$HOME`
+
+Installer for msys can be obtained from https://msys2.github.io/
