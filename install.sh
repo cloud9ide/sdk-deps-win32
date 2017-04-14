@@ -39,7 +39,10 @@ pushd "$(dirname `which bash`)"
 "$C9_DIR/node.exe" -e "
     require('fs').writeFileSync(
         process.execPath + '/../standalone.settings', 
-        JSON.stringify({bashDir: process.cwd()}, null,4),
+        JSON.stringify({
+            bashDir: process.cwd(),
+            HOME: process.env.HOME
+        }, null, 4),
         'utf8'
     )
 "
